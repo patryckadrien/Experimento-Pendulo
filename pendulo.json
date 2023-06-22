@@ -1,0 +1,375 @@
+[
+    {
+        "id": "eb649cc4a0632ff8",
+        "type": "tab",
+        "label": "Experimento Pêndulo",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "982a4cbbdeead9af",
+        "type": "ui_chart",
+        "z": "eb649cc4a0632ff8",
+        "name": "",
+        "group": "b3ddf8e2c25327cc",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Gráfico Luminosidade x Tempo",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 790,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "33ca8d34b94fd70b",
+        "type": "ui_text",
+        "z": "eb649cc4a0632ff8",
+        "group": "b3ddf8e2c25327cc",
+        "order": 1,
+        "width": "3",
+        "height": 1,
+        "name": "",
+        "label": "Luminosidade:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 760,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "7d2ecead656c847b",
+        "type": "debug",
+        "z": "eb649cc4a0632ff8",
+        "name": "Saída",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "tempo",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "f4728c48bb97c8a7",
+        "type": "ui_button",
+        "z": "eb649cc4a0632ff8",
+        "name": "",
+        "group": "1d595312e1e364ab",
+        "order": 1,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Limpar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 470,
+        "y": 180,
+        "wires": [
+            [
+                "982a4cbbdeead9af",
+                "33ca8d34b94fd70b",
+                "c98687842bbf60c7"
+            ]
+        ]
+    },
+    {
+        "id": "1ed95010dab2dbbd",
+        "type": "function",
+        "z": "eb649cc4a0632ff8",
+        "name": "Adicionar informção na Tabela",
+        "func": "var id = flow.get(\"lastId\") || 0;\n++id;\nmsg.payload = {\n    command: \"addRow\",\n    arguments: [\n        [\n            {\n                \"id\": id,\n                \"luminosidade\": msg.payload,\n                \"tempo\": msg.hora + \":\" + msg.minuto + \":\" + msg.segundos\n            }\n        ],\n        false\n    ],\n    returnPromise: true\n}\nflow.set(\"lastId\", id);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "c98687842bbf60c7",
+                "607fcae27d61e70c"
+            ]
+        ],
+        "info": "# addRow([row],onTop)\n\n`onTop=true`\n\nadds a new Row on top of the table"
+    },
+    {
+        "id": "26c0c4ae3582f500",
+        "type": "debug",
+        "z": "eb649cc4a0632ff8",
+        "name": "response from ui-table",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c98687842bbf60c7",
+        "type": "ui_table",
+        "z": "eb649cc4a0632ff8",
+        "group": "e0b65b14eda59cb0",
+        "name": "",
+        "order": 1,
+        "width": 9,
+        "height": 6,
+        "columns": [
+            {
+                "field": "id",
+                "title": "",
+                "width": "10%",
+                "align": "right",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "luminosidade",
+                "title": "Luminosidade",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "tempo",
+                "title": "Tempo",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 1,
+        "cts": true,
+        "x": 590,
+        "y": 240,
+        "wires": [
+            [
+                "26c0c4ae3582f500"
+            ]
+        ]
+    },
+    {
+        "id": "c1e5157166544fbb",
+        "type": "arduino in",
+        "z": "eb649cc4a0632ff8",
+        "name": "",
+        "pin": "0",
+        "state": "ANALOG",
+        "arduino": "303c5947f8d6d9e6",
+        "x": 90,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8bcdb8f119cf05c8",
+        "type": "serial in",
+        "z": "eb649cc4a0632ff8",
+        "name": "",
+        "serial": "132a028b2f532a71",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "92d3df8c409ca110"
+            ]
+        ]
+    },
+    {
+        "id": "92d3df8c409ca110",
+        "type": "function",
+        "z": "eb649cc4a0632ff8",
+        "name": "Conversão",
+        "func": "var time = new Date();\nvar hora = time.getHours();\nvar minuto = time.getMinutes();\nvar segundos = time.getSeconds();\nvar ldr1 = msg.payload[0] - 48;\nvar ldr2 = msg.payload[1] - 48;\nvar ldr3 = msg.payload[3] - 48;\nvar ldr4 = msg.payload[4] - 48;\nvar valor1 = (ldr1 * 1000) + (ldr2 * 100) + (ldr3 * 10) + ldr4;\nmsg.payload = valor1 / 10;\nmsg.hora = hora;\nmsg.minuto = minuto;\nmsg.segundos = segundos;\nmsg.tempo = hora + \":\" + minuto + \":\" + segundos;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 100,
+        "wires": [
+            [
+                "33ca8d34b94fd70b",
+                "7d2ecead656c847b",
+                "d59df0a9c9cdb917",
+                "982a4cbbdeead9af"
+            ]
+        ]
+    },
+    {
+        "id": "607fcae27d61e70c",
+        "type": "debug",
+        "z": "eb649cc4a0632ff8",
+        "name": "Saída",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "pressao",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d59df0a9c9cdb917",
+        "type": "switch",
+        "z": "eb649cc4a0632ff8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "110",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "1ed95010dab2dbbd"
+            ]
+        ]
+    },
+    {
+        "id": "10b27b3308be1213",
+        "type": "ui_spacer",
+        "z": "eb649cc4a0632ff8",
+        "name": "spacer",
+        "group": "b3ddf8e2c25327cc",
+        "order": 2,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "b3ddf8e2c25327cc",
+        "type": "ui_group",
+        "name": "Gráficos",
+        "tab": "cd2a9f7940643cd5",
+        "order": 2,
+        "disp": true,
+        "width": "9",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1d595312e1e364ab",
+        "type": "ui_group",
+        "name": "Controle",
+        "tab": "cd2a9f7940643cd5",
+        "order": 1,
+        "disp": true,
+        "width": "2",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e0b65b14eda59cb0",
+        "type": "ui_group",
+        "name": "Tabelas",
+        "tab": "cd2a9f7940643cd5",
+        "order": 3,
+        "disp": true,
+        "width": "9",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "303c5947f8d6d9e6",
+        "type": "arduino-board",
+        "device": "/dev/ttyACM0"
+    },
+    {
+        "id": "132a028b2f532a71",
+        "type": "serial-port",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "19200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "0",
+        "bin": "bin",
+        "out": "time",
+        "addchar": "false",
+        "responsetimeout": "1000"
+    },
+    {
+        "id": "cd2a9f7940643cd5",
+        "type": "ui_tab",
+        "name": "Experimento Pêndulo",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
